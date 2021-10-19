@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>The Cultural Demographics of Australia</title>
+
+	<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css" />
+
+    <link rel="stylesheet" href="css/layout.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
+
+    <script src="js/vega_lite_vis.js"></script>
+</head>
+<body>
+	<h1>The Cultural Demographics of Australia</h1>
+	<p id="subtitle">
+		An examination of the language usage and birthplaces of Australians in recent history
+		<br>by Faustina Nguyen
+	</p>
+
+	<div class="pure-g">
+		<div class="pure-u-1-5">
+		</div>
+		<div class="pure-u-3-5">
+			<p><span class="aus">Australia</span> is a rich and vibrant country comprising <span class="culture">many ethnic groups</span> within its population.
+				<br>
+				<br>
+				The <span class="aus">overwhelming majority of Australians speak English</span> (almost <b>93%</b> as of 2016), 
+				which is the official national language of Australia.
+				Only a few other countries around the world match that statistic, most notably, the United Kingdom, New Zealand 
+				and the United States of America, which are all considered to be Western and developed like Australia.
+			</p>
+		</div>
+		<div class="pure-u-1-5">
+		</div>
+
+		<div class="pure-u-1">
+			<h2>English Speakers Around the World</h2>
+		</div>
+
+		<div class="pure-u-1" id="map">
+		</div>
+		<div class="pure-u-1">
+			<p class="note">source:
+				<a href="https://en.wikipedia.org/wiki/List_of_countries_by_English-speaking_population">Wikipedia</a>
+			</p>
+		</div>
+
+		<div class="pure-u-1-5">
+		</div>
+		<div class="pure-u-3-5">
+			<br>
+			<p>So where is this acclaimed diversity in Australia?
+				<br>
+				<br>
+				At first glance, it may not seem that a country with such a dominant language would have much cultural variety.
+				<br>
+				<br>
+				However, <b>census data</b> from within the past two decades shows that this is, indeed, the case.
+				<br>
+				<br>
+				Below is an interactive visualisation of the <span class="culture">20 most common languages</span> other than English (LOTE) and <span class="culture">ancestries</span>
+				among <span class="aus">Australians</span>.
+			</p>
+		</div>
+
+		<br>
+		<div class="pure-u-1">
+			<h2>Multiculturalism of Australia</h2>
+			<p class="note">NOTE: feel free to click on the bars to see matching categories highlighted!</p>
+		</div>
+
+		<div class="pure-u-1" id="map2">
+		</div>
+		<div class="pure-u-1">
+			<p class="note">source:
+				<a href="https://profile.id.com.au/australia/">.id demographic resources</a>
+			</p>
+		</div>
+
+		<div class="pure-u-1-6">
+		</div>
+		<div class="pure-u-1-3">
+			<p class="left_col">It appears that the <span class="aus">bigger city areas of Australia</span> tend to have the <span class="culture">highest proportion known of multilinguals</span>, 
+				with both New South Wales and Victoria having <b>almost 30%</b> of their respective populations claiming to be able to 
+				speak another language. 
+				<br>
+				<br>
+				The <b>same languages make up the top 6 in both states</b> as well as for the umbrella category of greater capital cities, 
+				but in different orders.
+				<br>
+				These are: 
+				<ul>
+					<li>Mandarin</li>
+					<li>Cantonese</li>
+					<li>Arabic</li>
+					<li>Vietnamese</li>
+					<li>Italian</li>
+					<li>Greek</li>
+				</ul>
+			</p>
+			<p class="left_col">
+				The <span class="aus">Northern Territory</span> sports an even <span class="culture">larger fraction of multilingual people</span>, if only by a sliver.
+				<br>
+				<br>
+				Unlike the other states, however, the most commonly spoken LOTE there are Australian Indigenous languages, by 
+				a landslide.
+				<br>
+				<br>
+				One thing to bear in mind in the face of this information is that the NT is <b>not densely populated</b>, only having 
+				about 225,000 people, so the cultural demographic of the NT is not as representative of the wider Australian 
+				demographic as the aforementioned big cities, which have individual populations in excess of 5 million.
+			</p>
+		</div>
+		<div class="pure-u-1-3">
+			<p class="right_col">
+				Across all available times and areas, the <span class="culture">number of multilingual people</span> who are <span class="aus">sufficiently proficient in English</span> 
+				dwarfs the number of those <b>who are not</b>. This would explain why Australia has such a high percentage of English-speakers
+				while accommodating a wide range of backgrounds and cultures.
+				<br>
+				<br>
+				In recent years, there has been a <span class="culture">boom in the prevalence of East and Southeast Asian languages</span> across the board, 
+				especially Mandarin Chinese, rivalling or even overtaking the established Italian and Greek populations. Again, this 
+				is more of a characteristic of the bigger cities.
+				<br>
+				<br>
+				Unsurprisingly, the areas with relatively <b>high proportions</b> of <span class="aus">Australian, English, Irish or Scottish ancestry</span> also 
+				have the <b>highest proportion</b> of <span class="aus">people who only speak English</span>. Tasmania, Queensland and Regional Australia stand out 
+				in this regard.
+				<br>
+				<br>
+				Another interesting and perhaps unexpected observation to make here is the very recent overtaking of Australian 
+				ancestry by those with an English background. On the other hand, we can see that both populations have been 
+				neck-in-neck at the top of the list for at least decades, so this almost nation-wide occurrence may simply be a 
+				coincidence.
+			</p>
+		</div>
+
+		<div class="pure-u-1">
+		</div>
+
+		<div class="pure-u-1-5">
+		</div>
+		<div class="pure-u-3-5">
+			<br>
+			<p>
+				By using the slider to vary time, it is clear that Australia's population has not only been growing in absolute 
+				value, but also in <span class="culture">cultural diversity</span>, as the proportion of <span class="aus">monolingual English-speakers</span> to <span class="culture">multilingual people</span> has 
+				been diminishing.
+				<br>
+				<br>
+				The next question to ask is, "Is this is reflected in <span class="birth">migration data</span>?"
+				<br>
+				<br>
+				
+			</p>
+		</div>
+
+		<div class="pure-u-1">
+			<h2>Birthplaces of Australians</h2>
+		</div>
+
+		<div class="pure-u-1" id="map3">
+		</div>
+		<div class="pure-u-1">
+			<p class="note">source:
+				<a href="https://profile.id.com.au/australia/">.id demographic resources</a>
+			</p>
+		</div>
+
+		<div class="pure-u-1-6">
+		</div>
+		<div class="pure-u-1-3">
+			<br>
+			<p class="left_col">
+				The answer is a resounding "yes".
+				<br>
+				<br>
+				As could be expected, the <span class="birth">most common overseas birthplace is the United Kingdom</span>, consistent with our observation 
+				from the ancenstry census data. New Zealand also ranks quite highly in all. This would account for a large chunk of 
+				the top non-Australian, predominantly <span class="aus">English-speaking ancestries</span>.
+				<br>
+				<br>
+				Once again, we see the <span class="culture">East and Southeast Asian</span> identities catching up to the established <span class="culture">European communities</span>, if 
+				not outright overtaking them in number.
+			</p>
+		</div>
+		<div class="pure-u-1-3">
+			<br>
+			<p class="right_col">
+				We also see that the <span class="birth">percentage of Australians born overseas has been increasing</span> over time in all areas since 2001.
+				Tasmania and Regional Australia, two of the most remote areas in consideration, which were both shown to have 
+				relatively high monolingual English-speaking populations, are lagging behind the rest in this development.
+				<br>
+				<br>
+				Overall, the proportion of Australians who were <span class="birth">born overseas</span> in 2016 (26.3%) has <span class="birth">increased by about 4.5%</span> since 2001 
+				(21.8%)
+			</p>
+		</div>
+
+		<div class="pure-u-1-5">
+		</div>
+		<div class="pure-u-3-5">
+			<p>
+				<br>
+				<br>
+				<span class="aus">Australia</span> continues to become more and more <span class="culture">culturally</span> <span class="birth">diverse</span>, a home for any range of future generations to come.
+				<br>
+				<br>
+			</p>
+		</div>
+		<div class="pure-u-1-5">
+		</div>
+	</div>
+</body>
+</html>

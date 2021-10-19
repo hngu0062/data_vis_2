@@ -1,0 +1,244 @@
+{
+	"$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+	"data": {"url": "data/ausLOTE.csv"},
+	"params": [
+		{
+			"name": "year_select",
+			"value": 2016,
+			"bind": {
+				"input": "range",
+				"min": 2001,
+				"max": 2016,
+				"step": 5,
+				"name": "Select year: "
+			}
+	  	},
+	  	{
+			"name": "area_select",
+			"value": "Australia",
+			"bind": {
+			"input": "select",
+			"options": [
+					"Australia",
+					"New South Wales",
+					"Victoria",
+					"Queensland",
+					"South Australia",
+					"Western Australia",
+					"Tasmania",
+					"Northern Territory",
+					"Australian Capital Territory",
+					"Greater Capital Cities",
+					"Regional Australia"
+				],
+				"name": "Select area: "
+			}
+	  	},
+		{
+			"name": "stat_select",
+			"value": "",
+			"bind": {
+				"input": "select",
+				"options": ["","%"],
+				"name": "Select proficiency statistic: "
+			}
+		},
+		{
+			"name": "select", 
+			"select": {
+				"type":"point",
+				"fields": ["Data label"]
+			}
+		}
+	],
+	"vconcat": [
+		{
+			"hconcat": [
+				{
+					"title": "LOTE Spoken At Home",
+					"data": {
+						"url": "data/ausLOTE.csv", 
+						"format": {"parse": {
+						"2001": "number",
+						"2006": "number",
+						"2011": "number",
+						"2016": "number" }
+						}
+					},
+					"width": 300,
+					"height": 300,
+					"transform": [
+						{"filter": "datum.WebID < 50"},
+						{"fold": ["2001","2006","2011","2016"]},
+						{"filter": "datum.key == year_select"},
+						{"filter": "datum.Area == area_select"},
+						{"window": [{"op": "rank", "as": "ranking"}], 
+						"sort": [{"field": "value", "order":"descending"}]},
+						{"filter": "datum.ranking <= 20"}
+					],
+					"mark": {
+						"type":"bar",
+						"color":"#32ab72"
+					},
+					"encoding": {
+						"y": {
+							"field": "Data label",
+							"type": "nominal",
+							"title": "",
+							"sort": {"encoding": "x", "order": "descending"}
+						},
+						"x": {
+							"field": "value", 
+							"type": "quantitative", 
+							"title": "Speakers",
+							"scale": {
+								"domainMax": {"expr": "if(area_select=='Australia', 600000, if(area_select=='Greater Capital Cities', 600000, if(area_select=='New South Wales', 250000, if(area_select=='Victoria', 250000, if(area_select=='Northern Territory', 35000, if(area_select=='Australian Capital Territory', 15000, if(area_select=='Tasmania', 15000, 75000)))))))"}
+							}
+						},
+
+						"fillOpacity": {
+							"condition": {
+								"param": "select", 
+								"value": 1
+							},
+							"value": 0.5
+						},
+						"tooltip": [
+							{"field": "Area", "type": "nominal"},
+							{"field": "Data label", "type": "nominal", "title": "Language"},
+							{"field": "value", "type": "nominal", "title": "No. Speakers"}
+						]
+					}
+				},
+				{
+					"title": "Ancestry",
+					"data": {
+						"url": "data/ausancestry.csv", 
+						"format": {"parse": {
+						"2001": "number",
+						"2006": "number",
+						"2011": "number",
+						"2016": "number" }
+						}
+					},
+					"width": 400,
+					"height": 300,
+					"transform": [
+						{"filter": "datum.WebID < 50"},
+						{"fold": ["2001","2006","2011","2016"]},
+						{"filter": "datum.key == year_select"},
+						{"filter": "datum.Area == area_select"},
+						{"window": [{"op": "rank", "as": "ranking"}], 
+						"sort": [{"field": "value", "order":"descending"}]},
+						{"filter": "datum.ranking <= 20"}
+					],
+					"mark": {
+						"type":"bar",
+						"color":"#32ab72"
+					},
+					"encoding": {
+						"y": {
+							"field": "Data label",
+							"type": "nominal",
+							"title": "",
+							"sort": {"encoding": "x", "order": "descending"}
+						},
+						"x": {
+							"field": "value", 
+							"type": "quantitative", 
+							"title": "Population",
+							"scale": {
+								"domainMax": {
+									"expr": "if(area_select=='Australia', 8000000, if(area_select=='Greater Capital Cities', 8000000, if(area_select=='New South Wales', 2400000, if(area_select=='Victoria', 2400000, if(area_select=='Northern Territory', 70000, if(area_select=='Australian Capital Territory', 230000, if(area_select=='Tasmania', 230000, if(area_select=='Regional Australia', 8000000, 2000000))))))))"
+								}
+							}
+						},
+						"fillOpacity": {
+							"condition": {
+								"param": "select", 
+								"value": 1
+							},
+							"value": 0.5
+						},
+						"tooltip": [
+							{"field": "Area", "type": "nominal"},
+							{"field": "Data label", "type": "nominal", "title": "Background"},
+							{"field": "value", "type": "nominal", "title": "No. Australians"}
+						]
+					}
+				}
+			]
+		},
+		{
+			"title": "English Proficiency Population Overview",
+			"data": {
+				"url": "data/ausLOTEtotal.csv", 
+				"format": {"parse": {
+					"2001": "number",
+					"2006": "number",
+					"2011": "number",
+					"2016": "number",
+					"2001%": "number",
+					"2006%": "number",
+					"2011%": "number",
+					"2016%": "number" }
+				}
+			},
+			"width": 850,
+			"height": 30,
+			"transform": [
+				{"filter": "datum.WebID < 50"},
+				{"fold": ["2001","2006","2011","2016","2001%","2006%","2011%","2016%"]},
+				{"filter": "datum.key == year_select + stat_select"},
+				{"filter": "datum.Area == area_select"},
+				{"filter": "datum.Data_label != 'Total population'"},
+				{
+					"calculate": "if(datum.Data_label == 'Speaks English only', 0, if(datum.Data_label == 'Speaks another language, proficient in English', 1, if(datum.Data_label == 'Not stated', 3, 2)))",
+					"as": "proficiency_order"
+				}
+			],
+			"mark":"bar",
+			"encoding": {
+				"y": {
+					"field": "Area",
+					"title": ""
+				},
+				"x": {
+					"aggregate": "sum",
+					"field": "value",
+					"type": "quantitative", 
+					"title": "",
+					"scale": {
+						"domainMax": {
+							"expr": "if(stat_select=='%', 100, if(area_select=='Australia', 24000000, if(area_select=='Greater Capital Cities', 24000000, if(area_select=='Regional Australia', 24000000, if(area_select=='Northern Territory', 1000000, if(area_select=='Australian Capital Territory', 1000000, if(area_select=='Tasmania', 1000000, 8000000)))))))"
+						}
+					}
+				},
+				"color": {
+					"field": "Data_label",
+					"title": "",
+					"type": "ordinal",
+					"scale": {
+						"domain": ["Speaks English only","Speaks another language, proficient in English","Speaks another language, not proficient in English","Not stated"],
+						"range": ["#04578b","#3299ab","#6cbdab","#c7c7c7"]
+					}
+				},
+				"order": {"field": "proficiency_order"},
+				"tooltip": [
+					{"field": "Data_label", "type": "nominal", "title": "Proficiency"},
+					{"field": "value", "type": "quantitative", "title": "Population"}
+				]
+			}
+		}
+	],
+	"config": {
+		"title": {
+			"anchor":"middle"
+		},
+		"legend": {
+			"disable": false,
+			"direction": "horizontal",
+			"orient": "bottom"
+		}
+	}
+  }

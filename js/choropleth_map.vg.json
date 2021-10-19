@@ -1,0 +1,94 @@
+{
+	"$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+	"width": 1000,
+	"height": 475,
+	"params": [
+		{
+			"name": "zoom_level",
+			"value": 150,
+			"bind": {
+				"input": "range",
+				"min": 150,
+				"max": 550,
+				"step": 100,
+				"name": "Zoom: "
+			}
+		},
+		{
+			"name": "map_centre",
+			"value": [0, 0],
+			"bind": {
+				"input": "select",
+				"options": [
+					[0, 0],
+					[-100, 50],
+					[-60, -20],
+					[20, 55],
+					[20,0],
+					[100,35],
+					[140,-20]
+				],
+				"labels": ["none", "North America", "South America", "Europe", "Africa", "Asia", "Oceania"],
+				"name": "Focus: "
+			} 
+		}
+	],
+	"projection": {
+		"type": "equirectangular",
+		"scale": {"expr": "zoom_level"},
+		"center": {"expr": "map_centre"}
+	},
+	"layer":[
+	  	{
+			"data": {
+				"url": "https://raw.githubusercontent.com/KaneSec/vega_lite/main/3_choropleth_map/js/ne_110m_admin_0_countries.topojson",
+				"format": {"type": "topojson", "feature": "ne_110m_admin_0_countries"}
+			},
+			"transform": [
+				{"calculate": "'Data not available in ' + datum.properties.NAME", "as": "NA"}	
+			],
+			"mark": {
+				"type":"geoshape",
+				"fill":"#e4e4e4",
+				"stroke":"white",
+				"strokeWidth": 0.5
+			},
+			"encoding": {"tooltip": {"field": "NA"}}
+		},
+		{
+			"data": {
+				"url": "https://raw.githubusercontent.com/KaneSec/vega_lite/main/3_choropleth_map/js/ne_110m_admin_0_countries.topojson",
+				"format": {"type": "topojson", "feature": "ne_110m_admin_0_countries"}
+	  		},
+	  		"transform": [
+				{
+					"lookup": "properties.NAME_LONG",
+					"from": {
+						"data": {"url": "data/global_English.csv"},
+						"key": "Country",
+						"fields": ["Per_Total_English_speakers","Eligible population", "No Total English speakers"]
+					}
+				}
+			],
+			"mark": {"type": "geoshape"},
+			"encoding": {
+				"color": {
+					"field": "Per_Total_English_speakers",
+					"title": "Percent of Population",
+					"type": "quantitative",
+					"scale": {"scheme": "purpleblue", "domainMax":100, "type":"sqrt"}
+				},
+				"tooltip": [
+					{"field": "properties.NAME_LONG", "type": "nominal", "title": "Country"},
+					{
+							"field": "Per_Total_English_speakers",
+							"type": "quantitative",
+							"title": "% Speakers"
+					},
+					{"field": "Eligible population", "type": "nominal", "title": "Population"},
+					{"field": "No Total English speakers", "type": "nominal", "title": "No. Speakers"}
+				]
+			}
+	  	}
+	]
+  }

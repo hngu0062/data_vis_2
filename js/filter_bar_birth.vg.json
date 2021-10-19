@@ -1,0 +1,260 @@
+{
+	"$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+	"data": {"url": "data/ausbirth.csv"},
+	"params": [
+	  	{
+			"name": "year_select",
+			"value": 2016,
+			"bind": {
+				"input": "range",
+				"min": 2001,
+				"max": 2016,
+				"step": 5,
+				"name": "Select year: "
+			}
+	  	},
+	  	{
+			"name": "area_select",
+			"value": "Australia",
+			"bind": {
+			"input": "select",
+			"options": [
+					"Australia",
+					"New South Wales",
+					"Victoria",
+					"Queensland",
+					"South Australia",
+					"Western Australia",
+					"Tasmania",
+					"Northern Territory",
+					"Australian Capital Territory",
+					"Greater Capital Cities",
+					"Regional Australia"
+				],
+				"name": "Select area: "
+			}
+	  	},
+		  {
+			  "name": "stat_select",
+			  "value": "",
+			  "bind": {
+				  "input": "select",
+				  "options": ["","%"],
+				  "name": "Select summary statistic: "
+			  }
+		  }
+	],
+	"hconcat": [
+		{
+			"title": "Birthplace (Overseas)",
+			"data": {
+				"url": "data/ausbirth.csv", 
+				"format": {"parse": {
+				"2001": "number",
+				"2006": "number",
+				"2011": "number",
+				"2016": "number" }
+				}
+			},
+			"width": 350,
+			"height": 300,
+			"transform": [
+				{"filter": "datum.WebID < 50"},
+				{"fold": ["2001","2006","2011","2016"]},
+				{"filter": "datum.key == year_select"},
+				{"filter": "datum.Area == area_select"},
+				{"window": [{"op": "rank", "as": "ranking"}], 
+				"sort": [{"field": "value", "order":"descending"}]},
+				{"filter": "datum.ranking <= 20"}
+			],
+			"mark": {
+				"type":"bar",
+				"color":"#e7ba52"
+			},
+			"encoding": {
+				"y": {
+					"field": "Data_label",
+					"type": "nominal",
+					"title": "",
+					"sort": {"encoding": "x", "order": "descending"}
+				},
+				"x": {
+					"field": "value", 
+					"type": "quantitative", 
+					"title": "Population"
+				},
+				"tooltip": [
+					{"field": "Area", "type": "nominal"},
+					{"field": "Data_label", "type": "nominal", "title": "Birthplace"},
+					{"field": "value", "type": "nominal", "title": "No. Australians"}
+				]
+			}
+		},
+		{
+			"title": "Summary (Nation)",
+			"data": {
+				"url": "data/ausbirthtotal.csv", 
+				"format": {"parse": {
+					"2001": "number",
+					"2006": "number",
+					"2011": "number",
+					"2016": "number",
+					"2001%": "number",
+					"2006%": "number",
+					"2011%": "number",
+					"2016%": "number" }
+				}
+			},
+			"width": 95,
+			"height": 300,
+			"transform": [
+				{"filter": "datum.WebID < 50"},
+				{"filter": "datum.Area != 'New South Wales'"},
+				{"filter": "datum.Area != 'Victoria'"},
+				{"filter": "datum.Area != 'Queensland'"},
+				{"filter": "datum.Area != 'Western Australia'"},
+				{"filter": "datum.Area != 'South Australia'"},
+				{"filter": "datum.Area != 'Tasmania'"},
+				{"filter": "datum.Area != 'Australian Capital Territory'"},
+				{"filter": "datum.Area != 'Northern Territory'"},
+				{"fold": ["2001","2006","2011","2016","2001%","2006%","2011%","2016%"]},
+				{"filter": "datum.key == year_select + stat_select"},
+				{"filter": "datum.Data_label != 'Total Population'"},
+				{
+					"calculate": "if(datum.Data_label === 'Not stated', 2, if(datum.Data_label === 'Overseas', 1, 0))",
+					"as": "birthplace_order"
+				},
+				{
+					"calculate": "if(datum.Area === 'Australia', 0, if(datum.Area === 'Greater Capital Cities', 1, if(datum.Area === 'Regional Australia', 2, if(datum.Area === 'New South Wales', 3, if(datum.Area === 'Victoria', 4, if(datum.Area === 'Queensland', 5, if(datum.Area === 'Western Australia', 6, if(datum.Area === 'South Australia', 7, if(datum.Area === 'Tasmania', 8, if(datum.Area === 'Australian Capital Territory', 9, 10))))))))))",
+					"as": "area_order"
+				}
+			],
+			"mark":"bar",
+			"encoding": {
+				"x": {
+					"field": "Area",
+					"type": "ordinal",
+					"sort": {"field":"area_order"}
+				},
+				"y": {
+					"aggregate": "sum",
+					"field": "value",
+					"type": "quantitative", 
+					"title": "Population",
+					"scale": {
+						"domainMax": {"expr": "if(stat_select=='%', 100, 24000000)"}
+					}
+				},
+				"color": {
+					"field": "Data_label",
+					"title": "",
+					"type": "ordinal",
+					"scale": {
+						"domain": ["Not stated","Overseas", "Australia"],
+						"range": ["#c7c7c7","#e7ba52","#045482"]
+					}
+				},
+				"order": {"field": "birthplace_order"},
+				"stroke": {"value":"black"},
+				"strokeWidth": {
+					"condition": {
+						"test": "datum.Area == area_select",
+						"value": 1.8
+					},
+					"value": 0
+				},
+				"tooltip": [
+					{"field": "Area", "type": "nominal"},
+					{"field": "Data_label", "type": "nominal", "title": "Birthplace"},
+					{"field": "value", "type": "quantitative", "title": "Population"}
+				]
+			}
+		},
+		{
+			"title": "Summary (States and Territories)",
+			"data": {
+				"url": "data/ausbirthtotal.csv", 
+				"format": {"parse": {
+					"2001": "number",
+					"2006": "number",
+					"2011": "number",
+					"2016": "number",
+					"2001%": "number",
+					"2006%": "number",
+					"2011%": "number",
+					"2016%": "number" }
+				}
+			},
+			"width": 255,
+			"height": 300,
+			"transform": [
+				{"filter": "datum.WebID < 50"},
+				{"filter": "datum.Area != 'Australia'"},
+				{"filter": "datum.Area != 'Regional Australia'"},
+				{"filter": "datum.Area != 'Greater Capital Cities'"},
+				{"fold": ["2001","2006","2011","2016","2001%","2006%","2011%","2016%"]},
+				{"filter": "datum.key == year_select + stat_select"},
+				{"filter": "datum.Data_label != 'Total Population'"},
+				{
+					"calculate": "if(datum.Data_label === 'Not stated', 2, if(datum.Data_label === 'Overseas', 1, 0))",
+					"as": "birthplace_order"
+				},
+				{
+					"calculate": "if(datum.Area === 'Australia', 0, if(datum.Area === 'Greater Capital Cities', 1, if(datum.Area === 'Regional Australia', 2, if(datum.Area === 'New South Wales', 3, if(datum.Area === 'Victoria', 4, if(datum.Area === 'Queensland', 5, if(datum.Area === 'Western Australia', 6, if(datum.Area === 'South Australia', 7, if(datum.Area === 'Tasmania', 8, if(datum.Area === 'Australian Capital Territory', 9, 10))))))))))",
+					"as": "area_order"
+				}
+			],
+			"mark":"bar",
+			"encoding": {
+				"x": {
+					"field": "Area",
+					"type": "ordinal",
+					"sort": {"field":"area_order"}
+				},
+				"y": {
+					"aggregate": "sum",
+					"field": "value",
+					"type": "quantitative", 
+					"title": "",
+					"scale": {
+						"domainMax": {"expr": "if(stat_select=='%', 100, 8000000)"}
+					}
+				},
+				"color": {
+					"field": "Data_label",
+					"title": "",
+					"type": "ordinal",
+					"scale": {
+						"domain": ["Not stated","Overseas", "Australia"],
+						"range": ["#c7c7c7","#e7ba52","#045482"]
+					}
+				},
+				"order": {"field": "birthplace_order"},
+				"stroke": {"value":"black"},
+				"strokeWidth": {
+					"condition": {
+						"test": "datum.Area == area_select",
+						"value": 1.8
+					},
+					"value": 0
+				},
+				"tooltip": [
+					{"field": "Area", "type": "nominal"},
+					{"field": "Data_label", "type": "nominal", "title": "Birthplace"},
+					{"field": "value", "type": "quantitative", "title": "Population"}
+				]
+			}
+		}
+	],
+	"config": {
+		"legend": {
+			"disable": false
+		},
+		"mark": {
+			"strokeWidth": 0
+		},
+		"title": {
+			"anchor":"middle"
+		}
+	}
+  }
