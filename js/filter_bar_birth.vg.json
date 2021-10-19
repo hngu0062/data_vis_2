@@ -1,5 +1,6 @@
 {
 	"$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+	"description": "A combination of bar charts with linked variables of Australians' birth places",
 	"data": {"url": "data/ausbirth.csv"},
 	"params": [
 	  	{

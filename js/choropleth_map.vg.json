@@ -1,5 +1,6 @@
 {
 	"$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+	"description": "A choropleth map of the world with colour encoding for population of English speakers by country",
 	"width": 1000,
 	"height": 475,
 	"params": [

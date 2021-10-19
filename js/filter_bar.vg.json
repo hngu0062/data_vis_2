@@ -1,5 +1,6 @@
 {
 	"$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+	"description": "A combination of bar charts with linked variables of spoken languages in Australia and Australian ancestry",
 	"data": {"url": "data/ausLOTE.csv"},
 	"params": [
 		{
